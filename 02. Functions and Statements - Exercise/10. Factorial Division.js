@@ -1,0 +1,13 @@
+function factorialDivision(firstNUm, secondNum) {
+    return ((factorial(firstNUm) / factorial(secondNum)).toFixed(2))
+
+    function factorial(number) {
+        if (number === 1) {
+            return number;
+        }
+        return number * factorial(number - 1)
+    }
+}
+
+
+console.log(factorial(3))
