@@ -5,11 +5,24 @@ function employees(input) {
             this.personalNumber = name.length
          }
     }
-    let employeesArray = []
-    for (const name of input) {
-        employeesArray.push(new employee(name))
-    }
+    let employeesArray = input.reduce((data, name) => {
+        data.push(new employee(name))
+        return data
+    }, [])
     for (const employee of employeesArray) {
         console.log(`Name: ${employee.name} -- Personal Number: ${employee.personalNumber}`)
     }
 }
+
+employees([
+
+    'Silas Butler',
+
+    'Adnaan Buckley',
+
+    'Juan Peterson',
+
+    'Brendan Villarreal'
+
+])
+

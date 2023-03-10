@@ -11,22 +11,19 @@ function movies(input) {
             let index = data.indexOf(`directedBy`)
             let currentName = data.slice(0, index - 1)
             let director = data.slice(index + 11, (data.length))
-
-            for (const movie of moviesArray) {
-                if (movie[`name`] === currentName) {
+            let movie = moviesArray.find((m) => m.name === currentName)
+                if (movie) {
                     movie[`director`] = director
                 }
-            }
         } else if (data.includes(`onDate`)) {
             let index = data.indexOf(`onDate`)
             let currentName = data.slice(0, index - 1)
             let date = data.slice(index + 7, (data.length))
-
-            for (const movie of moviesArray) {
-                if (movie[`name`] === currentName) {
+            let movie = moviesArray.find((m) => m.name === currentName)
+                if (movie) {
                     movie[`date`] = date
                 }
-            }
+
         }
     }
     for (const movie of moviesArray) {
