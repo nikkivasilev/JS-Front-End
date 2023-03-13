@@ -11,24 +11,40 @@ function school(input) {
     }
     let graded = students.sort((a, b) => a[`grade`]- b[`grade`])
     let grade = graded[0][`grade`]
-    let currentGrade = []
-    let averageGradeScore = 0
-    console.log(`${grade} Grade`)
+    let grades = []
+    let gradeStudents = []
+    let gradeScores = 0
+    let lastStudents = []
+    let lastGradeScores = 0
     for (const student of graded) {
-
         if (grade !== student[`grade`]) {
-            grade = student[`grade`]
-            console.log()
-            console.log(`${grade} Grade`)
-            console.log(`List of students: ${currentGrade.join(', ')}`)
-            console.log(`Average annual score from last year: ${(averageGradeScore / currentGrade.length).toFixed(2)}`)
-            currentGrade = []
-            averageGradeScore = 0
+            gradeScores = Number((gradeScores / gradeStudents.length).toFixed(2))
+            grades.push({grade, gradeStudents, gradeScores})
+            grade = student['grade']
+            gradeScores = 0
+            gradeStudents = []
+            lastStudents = []
+            lastGradeScores = 0
         }
         if (grade === student[`grade`]) {
-            currentGrade.push(student[`name`])
-            averageGradeScore += student[`averageScore`]
+            gradeStudents.push(student[`name`])
+            gradeScores += student[`averageScore`]
         }
+        lastStudents.push(student[`name`])
+        lastGradeScores += student[`averageScore`]
+
+    }
+    lastGradeScores = Number((lastGradeScores / lastStudents.length).toFixed(2))
+    grades.push({grade, gradeStudents: lastStudents, gradeScores: lastGradeScores})
+    let counter = 0
+    for (const grade of grades) {
+        if (counter !== 0) {
+            console.log()
+        }
+        counter += 1
+        console.log(`${grade[`grade`]} Grade`)
+        console.log(`List of students: ${grade[`gradeStudents`].join(`, `)}`)
+        console.log(`Average annual score from last year: ${grade[`gradeScores`].toFixed(2)}`)
     }
 }
 
