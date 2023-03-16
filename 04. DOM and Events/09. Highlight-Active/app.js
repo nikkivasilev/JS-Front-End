@@ -1,11 +1,11 @@
 function focused() {
-    const divs = Array.from(document.querySelectorAll(`body > div > div`))
-    divs.forEach(div => {
-        div.addEventListener("focusin", () => {
-            div.classList.add("focused");
+    const allInputs = Array.from(document.getElementsByTagName(`input`))
+    allInputs.forEach(input => {
+        input.addEventListener("focus", (event) => {
+            event.target.parentElement.classList.add("focused")
           });
-          div.addEventListener("focusout", () => {
-            div.classList.remove("focused");
+          input.addEventListener("blur", (event) => {
+            event.target.parentElement.classList.remove("focused")
           });
     })
 }
