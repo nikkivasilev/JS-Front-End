@@ -10,14 +10,12 @@ function attachEvents() {
     loadButton.addEventListener(`click`, loadHandler)
     addButton.addEventListener(`click`, addHandler)
 
-    form.submit(function(e) {
-        e.preventDefault();
-    })
 
-    function loadHandler(e) {
-        if (e) {
-            e.preventDefault();
-        }
+    function loadHandler(event) {
+      if (event) {
+        event.preventDefault()
+      }
+
         todoList.innerHTML = ``
         fetch(BASE_URL)
         .then((res) => res.json())
@@ -25,6 +23,7 @@ function attachEvents() {
             for (const taskKey in tasks) {
                 let name = tasks[taskKey].name
                 let li = createElement(`li`, ``, todoList)
+                li.id = tasks[taskKey]._id
                 createElement(`span`, name, li)
                 let removeBtn = createElement(`button`, `Remove`, li)
                 let editBtn = createElement(`button`, `Edit`, li)
@@ -35,10 +34,10 @@ function attachEvents() {
         .catch((err) => console.error(err))
     }
 
-    function addHandler(e) {
-        if (e) {
-            e.preventDefault();
-        }
+    function addHandler(event) {
+      if (event) {
+        event.preventDefault()
+      }
         let name = titleInput.value
         
         let httpHeaders = {
@@ -56,18 +55,44 @@ function attachEvents() {
     }
 
 
-    function RemoveHandler(e) {
-       const currentTask = e.target.parentElement
-       let task = parentElement.querySelector(`span`)
-       
-       console.log(currentTask);
-        loadHandler()
-    }
-
-    function EditHandler(e) {
+    function RemoveHandler(event) {
+       const id = event.target.parentNode.id
+       const httpHeaders = {
+        method: 'DELETE'
+       }
+       fetch(`${BASE_URL}${id}`, httpHeaders)
+       .then(() => loadHandler())
+       .catch((err) => console.error(err))
         
     }
 
+    function EditHandler(event) {
+        const liParent = event.currentTarget.parentNode
+        const [span, _removeBtn, editBtn] = Array.from(liParent.children)
+        const editInput = createElement(`input`, span.textContent)
+        liParent.prepend(editInput)
+        const submitBtn = createElement(`button`, `Submit`)
+        submitBtn.addEventListener(`click`, submitHandler)
+        liParent.appendChild(submitBtn)
+        span.remove()
+        editBtn.remove()
+    }
+
+    function submitHandler(event) {
+      const liParent = event.currentTarget.parentNode
+      const id = liParent.id
+      const [input] = Array.from(liParent.children)
+      const httpHeaders = {
+        method: 'PATCH',
+        body: JSON.stringify({name: input.value})
+      }
+
+      fetch(`${BASE_URL}${id}`, httpHeaders)
+      .then(() => loadHandler())
+      .catch((err) => console.error(err))
+    
+    
+    }
 
 
 

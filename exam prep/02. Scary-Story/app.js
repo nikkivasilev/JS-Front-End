@@ -21,7 +21,7 @@ function solve() {
     let lastName = lastNameInput.value;
     let age = ageInput.value;
     let title = titleInput.value;
-    let genre = genreSelector.options[genreSelector.selectedIndex].value;
+    let genre = genreSelector.value;
     let story = storyTextarea.value;
     if (firstName && lastName && age && title && genre && story) {
       storyData = [firstName, lastName, age, title, genre, story];
@@ -34,7 +34,7 @@ function solve() {
       storyTextarea.value = ``
       const storyPreviewContainer = createElement(`li`, ``, previewContainer,``,[`story-info`]);
       const article = createElement(`article`, ``, storyPreviewContainer);
-      createElement(`h4`, `Name : ${firstName} ${lastName}`, article);
+      createElement(`h4`, `Name: ${firstName} ${lastName}`, article);
       createElement(`p`, `Age: ${age}`, article);
       createElement(`p`, `Title: ${title}`, article);
       createElement(`p`, `Genre: ${genre}`, article);
