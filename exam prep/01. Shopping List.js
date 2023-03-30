@@ -20,11 +20,10 @@ function shoppingList(input) {
             }
 
         } else if (action === `Rearrange`) {
-            let item = data[0]
-            if (products.includes(item)) {
-                let index = products.indexOf(item)
-                products.splice(index, 1)
-            }
+            let itemToRemove = data[0]
+            if (products.indexOf(itemToRemove) !== -1) {
+                let removed = products.splice(products.indexOf(itemToRemove), 1);
+              }
         }
 
     }
@@ -41,6 +40,7 @@ shoppingList([
 
   "Urgent Tomatoes",
     `Correct Tomatoes Black`,
+    `Rearrange Black`,
     `Rearrange Black`,
   "Go Shopping!",
 ]);
