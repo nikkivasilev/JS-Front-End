@@ -37,12 +37,13 @@ function attachEvents() {
                 postComments.push(comments[key])
                 }
             }
-            postTitleContainer.textContent = post.title
+            postCommentsContainer.innerHTML = ``
+            postTitleContainer.innerHTML = post.title
             postBodyContainer.textContent = post.body
             postComments.forEach((comment) => {
                 let text = comment.text
                 let commentId = comment.id
-                createElement(`li`, text, postCommentsContainer, commentId, )
+                createElement(`li`, text, postCommentsContainer, "post-comment" )
             })
 
         })

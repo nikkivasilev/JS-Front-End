@@ -1,3 +1,5 @@
+window.addEventListener(`load`, attachEvents)
+
 function attachEvents() {
   const BASE_URL = `http://localhost:3030/jsonstore/forecaster/`;
   const cityInput = document.getElementById(`location`);
@@ -21,7 +23,7 @@ function attachEvents() {
       let todayForecast = todayForecastData.forecast;
       let conditionSymbol = getConditionSymbol(todayForecast.condition);
       let todayForecastTemp = `${todayForecast.low}°/${todayForecast.high}°`;
-      const innerForecastDiv = createElement(`div`, ``, currentContainer, ``, ["forecast",]);
+      const innerForecastDiv = createElement(`div`, ``, currentContainer, ``, ["forecasts",]);
       const forecastSymbol = createElement(`span`, ``, innerForecastDiv, ``, [`condition`,`symbol`,]);
       forecastSymbol.innerHTML = conditionSymbol;
       const conditionContainer = createElement(`span`,"",innerForecastDiv,``,[`condition`]);
@@ -93,6 +95,6 @@ function attachEvents() {
   
 }
 
-attachEvents();
+
 
 
