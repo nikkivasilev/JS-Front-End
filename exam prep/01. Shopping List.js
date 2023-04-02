@@ -21,8 +21,9 @@ function shoppingList(input) {
 
         } else if (action === `Rearrange`) {
             let itemToRemove = data[0]
-            if (products.indexOf(itemToRemove) !== -1) {
-                let removed = products.splice(products.indexOf(itemToRemove), 1);
+            if (products.includes(itemToRemove)) {
+                products = products.filter((item) => item !== itemToRemove)
+                products.push(itemToRemove)
               }
         }
 
