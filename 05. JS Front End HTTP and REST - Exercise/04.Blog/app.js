@@ -28,7 +28,14 @@ function attachEvents() {
         fetch(BASE_URL)
         .then((res)=> res.json())
         .then((data) => {
-            let post = data.posts[checkedPostId]
+          let post;
+          let posts = data.posts
+          for (const key in posts) {
+            if (checkedPostId === posts[key].id) {
+              post = posts[key]
+            }
+        }
+            
             let comments = data.comments
             let postComments = []
             for (const key in comments) {
@@ -38,12 +45,12 @@ function attachEvents() {
                 }
             }
             postCommentsContainer.innerHTML = ``
-            postTitleContainer.innerHTML = post.title
+            postTitleContainer.textContent = post.title
             postBodyContainer.textContent = post.body
             postComments.forEach((comment) => {
                 let text = comment.text
                 let commentId = comment.id
-                createElement(`li`, text, postCommentsContainer, "post-comment" )
+                createElement(`li`, text, postCommentsContainer, commentId )
             })
 
         })
