@@ -1,78 +1,70 @@
 window.addEventListener("load", solve);
 
 function solve() {
-  const mainContainer = document.getElementById(`main`)
-  const firstNameInput = document.getElementById(`first-name`);
-  const lastNameInput = document.getElementById(`last-name`);
-  const ageInput = document.getElementById(`age`);
-  const titleInput = document.getElementById(`story-title`);
-  const genreSelector = document.getElementById(`genre`);
-  const storyTextarea = document.getElementById(`story`);
-  const publishBtn = document.getElementById(`form-btn`);
-  const previewContainer = document.getElementById(`preview-list`);
-  let storyData = [];
+  
+  const inputDOMSelectors = {
+    firstName: document.getElementById(`first-name`),
+    lastName: document.getElementById(`last-name`),
+    age: document.getElementById(`age`),
+    title: document.getElementById(`story-title`),
+    genre: document.getElementById(`genre`),
+    story: document.getElementById(`story`),
+  }
 
-  publishBtn.addEventListener(`click`, publishHandler);
+  const otherDOMSelectors = {
+    formBtn: document.getElementById(`form-btn`),
+    previewContainer: document.getElementById(`preview-list`),
+    mainDiv: document.getElementById(`main`),
+  }
+  let publishedData = {}
+  otherDOMSelectors.formBtn.addEventListener(`click`, publishHandler)
+  
 
+  function publishHandler(event) {
+    let data = {}
+    for (const key in inputDOMSelectors) {
+      data[key] = inputDOMSelectors[key].value
+    }
+    if (Object.values(data).every((v) => v !== ``)) {
+      publishedData = data
+      for (const key in inputDOMSelectors) {
+        if (key !== `genre`){
+        inputDOMSelectors[key].value = ''
+        }
+      }
+      otherDOMSelectors.formBtn.disabled = true
+      const li = createElement(`li`, ``, otherDOMSelectors.previewContainer, ``, [`story-info`])
+      const article = createElement(`article`, ``, li)
+      createElement(`h4`, `Name: ${data.firstName} ${data.lastName}`, article)
+      createElement(`p`, `Age: ${data.age}`, article)
+      createElement(`p`, `Title: ${data.title}`, article)
+      createElement(`p`, `Genre: ${data.genre}`, article)
+      createElement(`p`, data.story, article)
+      const saveBtn = createElement(`button`, `Save Story`, li, ``, [`save-btn`])
+      const editBtn = createElement(`button`, `Edit Story`, li, ``, [`edit-btn`])
+      const deleteBtn = createElement(`button`, `Delete Story`, li, ``, [`delete-btn`])
 
+      saveBtn.addEventListener(`click`, saveHandler)
+      editBtn.addEventListener(`click`, editHandler)
+      deleteBtn.addEventListener(`click`, deleteHandler)      
+    }
 
-  function publishHandler() {
-    let firstName = firstNameInput.value;
-    let lastName = lastNameInput.value;
-    let age = ageInput.value;
-    let title = titleInput.value;
-    let genre = genreSelector.value;
-    let story = storyTextarea.value;
-    if (firstName && lastName && age && title && genre && story) {
-      storyData = [firstName, lastName, age, title, genre, story];
-      publishBtn.disabled = true;
-      firstNameInput.value = ``
-      lastNameInput.value = ``
-      ageInput.value = ``
-      titleInput.value = ``
-      genreSelector.value= `Disturbing`
-      storyTextarea.value = ``
-      const storyPreviewContainer = createElement(`li`, ``, previewContainer,``,[`story-info`]);
-      const article = createElement(`article`, ``, storyPreviewContainer);
-      createElement(`h4`, `Name: ${firstName} ${lastName}`, article);
-      createElement(`p`, `Age: ${age}`, article);
-      createElement(`p`, `Title: ${title}`, article);
-      createElement(`p`, `Genre: ${genre}`, article);
-      createElement(`p`, story, article);
-      const saveBtn = createElement(`button`, `Save Story`, storyPreviewContainer, ``, [
-        `save-btn`,
-      ]);
-      const editBtn = createElement(`button`, `Edit Story`, storyPreviewContainer, ``, [
-        `edit-btn`,
-      ]);
-      const deleteBtn = createElement(`button`, `Delete Story`, storyPreviewContainer, ``, [
-        `delete-btn`,
-      ]);
-      saveBtn.addEventListener(`click`, saveHandler);
-      editBtn.addEventListener(`click`, editHandler);
-      deleteBtn.addEventListener(`click`, deleteHandler);
+    function saveHandler() {
+      otherDOMSelectors.mainDiv.innerHTML = `<h1>Your scary story is saved!</h1>`
+    }
+    function editHandler() {
+      for (const key in inputDOMSelectors) {
+        inputDOMSelectors[key].value = publishedData[key]
+      }
+      otherDOMSelectors.formBtn.disabled = false
+      otherDOMSelectors.previewContainer.innerHTML = `<h3>Preview</h3>`
+    }
+    function deleteHandler() {
+      otherDOMSelectors.formBtn.disabled = false
+      otherDOMSelectors.previewContainer.innerHTML = `<h3>Preview</h3>`
     }
   }
 
-  function saveHandler() {
-    mainContainer.innerHTML = `<h1>Your scary story is saved!</h1>`
-
-  }
-  function editHandler() {
-    let [firstName, lastName, age, title, genre, story] = storyData
-    publishBtn.disabled = false
-    previewContainer.innerHTML = `<h3>Preview</h3>`
-    firstNameInput.value = firstName
-      lastNameInput.value = lastName
-      ageInput.value = age
-      titleInput.value =title
-      genreSelector.value= `Disturbing`
-      storyTextarea.value = story
-  }
-  function deleteHandler() {
-    publishBtn.disabled = false
-    previewContainer.innerHTML = `<h3>Preview</h3>`
-  }
 
   function createElement(type, content, parent, id, classes, attributes) {
     const htmlElement = document.createElement(type);
